@@ -35,6 +35,7 @@ public class DestinationService {
 
   // 생성
   @Transactional
+  @CacheEvict(value = "destinations", allEntries = true) // 추가: 새로운 데이터가 생기면 전체 목록 캐시 삭제
   public Destination createDestination(Destination destination) {
     log.info("여행지 생성 - {}", destination.getName());
     log.info("여행지 정보 : {}", destination);
