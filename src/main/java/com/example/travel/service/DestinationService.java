@@ -19,7 +19,7 @@ public class DestinationService {
   private final DestinationRepository destinationRepository;
 
   // 전체 조회 (Redis 캐싱, key: destinations)
-  @Cacheable(value = "destinations")
+  @Cacheable(value = "destinations", key = "'all'")
   public List<Destination> getAllDestinations() {
     log.info("전체 여행지 조회 - DB 조회");    // 캐싱된 데이터 가져올 때 로그 출력 x
     return destinationRepository.findAll();
@@ -35,7 +35,7 @@ public class DestinationService {
 
   // 생성
   @Transactional
-  @CacheEvict(value = "destinations", allEntries = true) // 추가: 새로운 데이터가 생기면 전체 목록 캐시 삭제
+  @CacheEvict(value = "destinations", key = "'all'") // 추가: 새로운 데이터가 생기면 전체 목록 캐시 삭제
   public Destination createDestination(Destination destination) {
     log.info("여행지 생성 - {}", destination.getName());
     log.info("여행지 정보 : {}", destination);
