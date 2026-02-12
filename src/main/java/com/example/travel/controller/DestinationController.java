@@ -1,10 +1,9 @@
 package com.example.travel.controller;
 
+import com.example.travel.aspect.LogExecutionTime;
 import com.example.travel.entity.Destination;
 import com.example.travel.service.DestinationService;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,35 +25,16 @@ public class DestinationController {
 
   // 전체 조회
   @GetMapping
-  public Map<String, Object> getAllDestinations() {
-    long startTime = System.currentTimeMillis();
-
-    List<Destination> destinations = destinationService.getAllDestinations();
-
-    long endTime = System.currentTimeMillis();
-    long duration = endTime - startTime;
-
-    Map<String, Object> response = new HashMap<>();
-    response.put("destinations", destinations);
-    response.put("responseTime", duration);
-
-    return response;
+  @LogExecutionTime
+  public List<Destination> getAllDestinations() {
+    return destinationService.getAllDestinations();
   }
 
   // 단건 조회
   @GetMapping("/{id}")
-  public Map<String, Object> getDestination(@PathVariable Long id) {
-    long startTime = System.currentTimeMillis();
-
-    Destination destination = destinationService.getDestination(id);
-
-    long endTime = System.currentTimeMillis();
-    long duration = endTime - startTime;
-
-    Map<String, Object> response = new HashMap<>();
-    response.put("destination", destination);
-    response.put("responseTime", duration);
-    return response;
+  @LogExecutionTime
+  public Destination getDestination(@PathVariable Long id) {
+    return destinationService.getDestination(id);
   }
 
   // 생성
